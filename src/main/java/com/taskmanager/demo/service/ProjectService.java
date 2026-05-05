@@ -38,4 +38,24 @@ public class ProjectService {
     public List<Project> getAllProjects() {
         return projectRepo.findAll();
     }
+
+    public Project addMember(Long projectId, Long userId, String email) {
+
+        User admin = userRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (admin.getRole() != Role.ADMIN) {
+            throw new RuntimeException("Only ADMIN can add members");
+        }
+
+        Project project = projectRepo.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        project.getMembers().add(user);
+
+        return projectRepo.save(project);
+    }
 }

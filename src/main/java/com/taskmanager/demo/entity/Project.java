@@ -2,6 +2,7 @@ package com.taskmanager.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,4 +16,12 @@ public class Project {
 
     @ManyToOne
     private User createdBy;
+
+    @ManyToMany
+    @JoinTable(
+        name = "project_members",
+        joinColumns = @JoinColumn(name = "project_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> members;
 }
