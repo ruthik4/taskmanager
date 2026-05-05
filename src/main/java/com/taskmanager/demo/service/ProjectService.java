@@ -2,6 +2,7 @@ package com.taskmanager.demo.service;
 
 import com.taskmanager.demo.dto.ProjectRequest;
 import com.taskmanager.demo.entity.Project;
+import com.taskmanager.demo.entity.Role;
 import com.taskmanager.demo.entity.User;
 import com.taskmanager.demo.repository.ProjectRepository;
 import com.taskmanager.demo.repository.UserRepository;
@@ -22,6 +23,10 @@ public class ProjectService {
     public Project createProject(ProjectRequest request, String userEmail) {
         User user = userRepo.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user.getRole() != Role.ADMIN) {
+            throw new RuntimeException("Only ADMIN can create projects");
+        }
 
         Project project = new Project();
         project.setName(request.getName());
