@@ -41,6 +41,10 @@ public class TaskService {
         Project project = projectRepo.findById(request.getProjectId())
                 .orElseThrow(() -> new RuntimeException("Project not found"));
 
+        if (!project.getMembers().contains(assignedUser)) {
+            throw new RuntimeException("User is not part of this project");
+        }
+
         Task task = new Task();
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
