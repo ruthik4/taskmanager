@@ -19,7 +19,10 @@ public class TaskController {
     // CREATE TASK
     @PostMapping
     public Task createTask(@RequestBody TaskRequest request) {
-        return taskService.createTask(request);
+        String email = org.springframework.security.core.context.SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+        return taskService.createTask(request, email);
     }
 
     // GET TASKS BY PROJECT
@@ -34,6 +37,9 @@ public class TaskController {
             @PathVariable Long taskId,
             @RequestParam Status status
     ) {
-        return taskService.updateStatus(taskId, status);
+        String email = org.springframework.security.core.context.SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+        return taskService.updateStatus(taskId, status, email);
     }
 }

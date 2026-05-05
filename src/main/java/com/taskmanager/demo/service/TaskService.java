@@ -2,6 +2,7 @@ package com.taskmanager.demo.service;
 
 import com.taskmanager.demo.dto.TaskRequest;
 import com.taskmanager.demo.entity.Project;
+import com.taskmanager.demo.entity.Role;
 import com.taskmanager.demo.entity.Status;
 import com.taskmanager.demo.entity.Task;
 import com.taskmanager.demo.entity.User;
@@ -25,9 +26,16 @@ public class TaskService {
     @Autowired
     private ProjectRepository projectRepo;
 
-    public Task createTask(TaskRequest request) {
+    public Task createTask(TaskRequest request, String email) {
 
-        User user = userRepo.findById(request.getAssignedUserId())
+        User currentUser = userRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (currentUser.getRole() != Role.ADMIN) {
+            throw new RuntimeException("Only ADMIN can assign tasks");
+        }
+
+        User assignedUser = userRepo.findById(request.getAssignedUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Project project = projectRepo.findById(request.getProjectId())
@@ -38,7 +46,7 @@ public class TaskService {
         task.setDescription(request.getDescription());
         task.setDeadline(request.getDeadline());
         task.setStatus(Status.PENDING);
-        task.setAssignedTo(user);
+        task.setAssignedTo(assignedUser);
         task.setProject(project);
 
         return taskRepo.save(task);
@@ -48,9 +56,13 @@ public class TaskService {
         return taskRepo.findByProjectId(projectId);
     }
 
-    public Task updateStatus(Long taskId, Status status) {
+    public Task updateStatus(Long taskId, Status status, String email) {
         Task task = taskRepo.findById(taskId)
                 .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        if (!task.getAssignedTo().getEmail().equals(email)) {
+            throw new RuntimeException("You can only update your own tasks");
+        }
 
         task.setStatus(status);
         return taskRepo.save(task);
