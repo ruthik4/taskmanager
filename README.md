@@ -1,7 +1,7 @@
 Team Task Manager - Backend API
 A robust, full-stack collaborative productivity application backend built with Spring Boot 3, Spring Security, and MySQL. This API provides a secure, role-based platform for teams to manage projects, assign tasks, and track productivity through real-time dashboards.
 
-NOTE: I have developed complete backend and deployed to railway. I will develop frontend by today evening i.e by 06/05/2026.
+NOTE: I have developed complete backend and frontend.I have deployed backend to railway. Still i need to deploy frontend. 
 ---
 ## 🛠️ Tech Stack
 * java 21
@@ -10,6 +10,12 @@ NOTE: I have developed complete backend and deployed to railway. I will develop 
 * JJWT (JSON Web Token authentication)
 * Lombok (Boilerplate reduction)
 * Railway (Cloud Deployment)
+
+* ### Frontend
+- React
+- Vite
+- React Router DOM
+- Axios
 ---
 ## ✨ Key Features
 * 🔒 Stateless JWT Authentication:** Secure login and registration using modern JSON Web Tokens and BCrypt password hashing.
@@ -61,3 +67,22 @@ UPDATE user SET role = 'ADMIN' WHERE email = 'your@email.com';
 This application is deployed and hosted on Railway.
 
 Base URL (local): http://localhost:8080
+
+2) Configure backend database
+Update src/main/resources/application.properties:
+3) Run backend (Spring Boot)
+Backend runs at: http://localhost:8080
+4) Run frontend (React + Vite)
+Frontend runs at: http://localhost:5173
+🔗 Frontend-Backend Connection
+Frontend API base URL is configured in:
+frontend/src/config.js
+API_URL = "http://localhost:8080"
+Authenticated requests include JWT automatically via Axios interceptor in:
+frontend/src/services/api.js
+👤 Create First Admin User
+All signups default to MEMBER. Promote one user to admin manually:
+UPDATE user SET role = 'ADMIN' WHERE email = 'your@email.com';
+✅ Default Local URLs
+Frontend: http://localhost:5173
+Backend: http://localhost:8080
