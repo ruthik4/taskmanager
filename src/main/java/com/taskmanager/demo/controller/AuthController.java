@@ -35,7 +35,7 @@ public class AuthController {
 
     // LOGIN
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
+    public java.util.Map<String, String> login(@RequestBody User user) {
 
         User existing = userRepo.findByEmail(user.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -44,6 +44,9 @@ public class AuthController {
             throw new RuntimeException("Invalid password");
         }
 
-        return jwtUtil.generateToken(existing.getEmail());
+        java.util.Map<String, String> response = new java.util.HashMap<>();
+        response.put("token", jwtUtil.generateToken(existing.getEmail()));
+        response.put("role", existing.getRole().name());
+        return response;
     }
 }

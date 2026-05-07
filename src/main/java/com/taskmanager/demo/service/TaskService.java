@@ -71,4 +71,56 @@ public class TaskService {
         task.setStatus(status);
         return taskRepo.save(task);
     }
+
+    public Task unassignTask(Long taskId, String email) {
+        User admin = userRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (admin.getRole() != Role.ADMIN) {
+            throw new RuntimeException("Only ADMIN can unassign tasks");
+        }
+
+        Task task = taskRepo.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        task.setAssignedTo(null);
+
+        return taskRepo.save(task);
+    }
+
+    public Task assignTask(Long taskId, Long userId, String email) {
+        User admin = userRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (admin.getRole() != Role.ADMIN) {
+            throw new RuntimeException("Only ADMIN can assign tasks");
+        }
+
+        Task task = taskRepo.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!task.getProject().getMembers().contains(user)) {
+            throw new RuntimeException("User is not part of this project");
+        }
+
+        task.setAssignedTo(user);
+        return taskRepo.save(task);
+    }
+
+    public void deleteTask(Long taskId, String email) {
+        User admin = userRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (admin.getRole() != Role.ADMIN) {
+            throw new RuntimeException("Only ADMIN can delete tasks");
+        }
+
+        Task task = taskRepo.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        taskRepo.delete(task);
+    }
 }

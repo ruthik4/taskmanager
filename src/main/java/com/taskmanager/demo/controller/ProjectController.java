@@ -36,7 +36,10 @@ public class ProjectController {
     // GET ALL PROJECTS
     @GetMapping
     public List<Project> getProjects() {
-        return projectService.getAllProjects();
+        String email = org.springframework.security.core.context.SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+        return projectService.getProjectsForUser(email);
     }
 
     @PostMapping("/{projectId}/members/{userId}")
@@ -58,5 +61,25 @@ public class ProjectController {
                 .orElseThrow(() -> new RuntimeException("Project not found"));
 
         return project.getMembers();
+    }
+
+    @DeleteMapping("/{projectId}")
+    public void deleteProject(@PathVariable Long projectId) {
+        String email = org.springframework.security.core.context.SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+        projectService.deleteProject(projectId, email);
+    }
+
+    @DeleteMapping("/{projectId}/members/{userId}")
+    public Project removeMember(
+            @PathVariable Long projectId,
+            @PathVariable Long userId
+    ) {
+        String email = org.springframework.security.core.context.SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+
+        return projectService.removeMember(projectId, userId, email);
     }
 }
