@@ -36,7 +36,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // Allow local frontend (Vite)
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173","https://taskmanager-production-76f3.up.railway.app/));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173","https://spectacular-reprieve-production-1c24.up.railway.app"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
