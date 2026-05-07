@@ -1,5 +1,3 @@
 // Backend API base URL.
-// When running locally, point to your Spring Boot server.
-export const API_URL = "http://localhost:8080";
-
-// For production deployments, switch `API_URL` to your deployed backend host.
+// Local default is used when VITE_API_URL is not provided.
+export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
