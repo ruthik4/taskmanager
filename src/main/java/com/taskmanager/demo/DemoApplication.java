@@ -1,4 +1,4 @@
-Update backend CORS to allow frontend domainpackage com.taskmanager.demo;
+package com.taskmanager.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
