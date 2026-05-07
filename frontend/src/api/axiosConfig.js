@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-// Switch to your Railway URL when pushing to production
+// Switch to your production URL when deploying
 const BASE_URL = 'http://localhost:8080';
-// const BASE_URL = 'https://taskmanager-production-76f3.up.railway.app';
+// const BASE_URL = 'https://your-production-host.com';
 
 const api = axios.create({
   baseURL: BASE_URL,

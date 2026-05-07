@@ -60,4 +60,4 @@ UPDATE user SET role = 'ADMIN' WHERE email = 'your@email.com';
 🌍 Production Deployment
 This application is deployed and hosted on Railway.
 
-Base URL: https://taskmanager-production-76f3.up.railway.app
+Base URL (local): http://localhost:8080

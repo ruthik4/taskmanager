@@ -35,8 +35,8 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Allow frontend port (Vite) and your Railway production frontend (when deployed)
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://taskmanager-production-76f3.up.railway.app"));
+        // Allow local frontend (Vite)
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
